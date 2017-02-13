@@ -23,7 +23,7 @@ public class BarChart extends AxisChart {
 		super.draw(data, canvas);
 
 		DataPrep.PreparedChartData prepData = data.getPrepared();
-		float distPerSeries = 20;
+		float distPerSeries = 0;
 		float totalSeriesDist = distPerSeries * (prepData.series + 1);
 		float distPerValue = 20;
 		float totalValuesDist = distPerValue * (prepData.getTotalValues() + prepData.series);
@@ -39,7 +39,7 @@ public class BarChart extends AxisChart {
 				dataRect.set(0, 0, (float) prepared.xScale, (float) prepared.yScale);
 				dataRect.offset((float) prepared.xOffset, -(float) prepared.yOffset);
 				scaleRect(dataRect, xScale, yScale);
-				dataRect.offset(seriesCnt * distPerSeries + dataCnt * distPerValue, 0);
+				dataRect.offset((seriesCnt * distPerSeries) + (dataCnt * distPerValue), 0);
 				dataRect.offset(mainDrawArea.left, mainDrawArea.bottom - dataRect.height());
 				canvas.drawRect(dataRect, rectPaint);
 				dataCnt++;

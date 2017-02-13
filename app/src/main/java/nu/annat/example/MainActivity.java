@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 		dataPoints.add(new DataPoint("a", 10.0));
 		dataPoints.add(new DataPoint("b", 11.0));
 		dataPoints.add(new DataPoint("c", 21.0));
-//		dataPoints.add(new DataPoint("d", 15.0));
+		dataPoints.add(new DataPoint("d", 15.0));
 //		dataPoints.add(new DataPoint("e", 3.0));
 //		dataPoints.add(new DataPoint("f", 5.0));
 		DataSet dataSet = new DataSet(dataPoints);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 		dataPoints2.add(new DataPoint("a", 11.0));
 		dataPoints2.add(new DataPoint("b", 12.0));
 		dataPoints2.add(new DataPoint("c", 22.0));
-//		dataPoints2.add(new DataPoint("d", 15.0));
+		dataPoints2.add(new DataPoint("d", 15.0));
 //		dataPoints2.add(new DataPoint("e", 3.0));
 //		dataPoints2.add(new DataPoint("f", 5.0));
 //		dataPoints2.add(new DataPoint("g", 7.0));
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 		dataPoints3.add(new DataPoint("a", 1.0));
 		dataPoints3.add(new DataPoint("b", 2.0));
 		dataPoints3.add(new DataPoint("c", 2.0));
-//		dataPoints2.add(new DataPoint("d", 15.0));
+		dataPoints2.add(new DataPoint("d", 15.0));
 //		dataPoints2.add(new DataPoint("e", 3.0));
 //		dataPoints2.add(new DataPoint("f", 5.0));
 //		dataPoints2.add(new DataPoint("g", 7.0));

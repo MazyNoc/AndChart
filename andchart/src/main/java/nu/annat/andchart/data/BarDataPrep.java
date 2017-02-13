@@ -40,7 +40,7 @@ public class BarDataPrep extends DataPrep {
 			int dataCnt = 0;
 			for (DataPoint dataPoint : dataSet.getDataPoints()) {
 				BarDataPrep.BarDataPoint prepared = (BarDataPrep.BarDataPoint) dataPoint.getPrepared();
-				prepared.xOffset = xScale * (dataCnt * dataSetSize) + xScale * seriesCnt;
+				prepared.xOffset = xScale * (seriesCnt * dataPointSize) + xScale * dataCnt;
 				prepared.xScale = xScale;
 				prepared.yOffset = 0;
 				prepared.yScale = yScale * dataPoint.getValue();
