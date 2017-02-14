@@ -6,10 +6,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import nu.annat.andchart.options.ChartOptions;
 import nu.annat.andchart.Configuration;
 import nu.annat.andchart.data.ChartData;
+import nu.annat.andchart.data.DataPrep;
 
-public class AxisChart extends ChartLayout {
+public class AxisChart<T extends ChartOptions, PREP extends DataPrep> extends ChartLayout<T, PREP> {
 
 	protected Paint xAxisPaint;
 	protected Paint yAxisPaint;
@@ -26,6 +28,10 @@ public class AxisChart extends ChartLayout {
 	private int yAxisDistance;
 	protected double yScale;
 	protected double xScale;
+
+	public AxisChart(T options) {
+		super(options);
+	}
 
 
 	private void drawYAxis(Canvas canvas, Rect yAxisArea) {
@@ -45,6 +51,9 @@ public class AxisChart extends ChartLayout {
 		}
 	}
 
+
+
+
 	@Override
 	public void draw(ChartData data, Canvas canvas) {
 		super.draw(data, canvas);
@@ -58,6 +67,15 @@ public class AxisChart extends ChartLayout {
 
 		mainDrawArea.bottom = mainDrawArea.bottom - xAxisArea.height();
 		mainDrawArea.left = mainDrawArea.left + yAxisArea.right;
+		dataPrep.prepare(mainDrawArea);
+		drawMainArea(data, canvas);
+	}
+
+
+	public void drawMainArea(ChartData data, Canvas canvas) {
+		super.draw(data, canvas);
+
+
 	}
 
 	public void ensureInit(Configuration configuration) {
@@ -78,17 +96,11 @@ public class AxisChart extends ChartLayout {
 
 		rectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rectPaint.setColor(Color.BLUE);
-		rectPaint.setStyle(Paint.Style.STROKE);
+		rectPaint.setStrokeWidth(20);
+		rectPaint.setStyle(Paint.Style.FILL);
 
 		xAxisDistance = configuration.scaleToRoundedPixels(20);
 		yAxisDistance = configuration.scaleToRoundedPixels(20);
 	}
 
-	public static RectF scaleRect(RectF dataRect, double xScale, double yScale) {
-		dataRect.bottom *= yScale;
-		dataRect.top *= yScale;
-		dataRect.left *= xScale;
-		dataRect.right *= xScale;
-		return dataRect;
-	}
 }

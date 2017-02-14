@@ -1,58 +1,70 @@
 package nu.annat.andchart.data;
 
-public class BarDataPrep extends DataPrep {
+import android.graphics.Rect;
+import android.graphics.RectF;
+
+import nu.annat.andchart.options.BarChartOptions;
+
+public class BarDataPrep<T extends BarChartOptions> extends DataPrep<T> {
 
 
+    public BarDataPrep(T options) {
+        super(options);
+    }
 
-	public static class BarDataPoint extends PreparedDataPoint {
-		public double xScale = 1;
-		public double yScale = 1;
-		public double xOffset = 0;
-		public double yOffset = 0;
-	}
+    @Override
+    public void setData(ChartData data) {
+        super.setData(data);
+    }
 
-	@Override
-	public void setData(ChartData data) {
-		super.setData(data);
-	}
+    @Override
+    protected void prep(ChartData data, Rect drawArea) {
+        super.prep(data, drawArea);
 
-	@Override
-	protected void prep(ChartData data) {
-		super.prep(data);
+        int dataSetSize = data.getDataSets().size();
+        int dataPointSize = 0;
+        double maxValue = Double.MIN_VALUE;
+        for (DataSet dataSet : data.getDataSets()) {
+            dataPointSize = Math.max(dataPointSize, dataSet.getDataPoints().size());
+            for (DataPoint dataPoint : dataSet.getDataPoints()) {
+                maxValue = Math.max(maxValue, dataPoint.getValue());
+            }
+        }
 
-		int dataSetSize = data.getDataSets().size();
-		int dataPointSize = 0;
-		double maxValue = Double.MIN_VALUE;
-		for (DataSet dataSet : data.getDataSets()) {
-			dataPointSize = Math.max(dataPointSize, dataSet.getDataPoints().size());
-			for (DataPoint dataPoint : dataSet.getDataPoints()) {
-				maxValue = Math.max(maxValue, dataPoint.getValue());
-			}
-		}
+        float distPerSeries = options.seriesDistance;
+        float totalSeriesDist = distPerSeries * dataSetSize;
+        float distPerValue = options.barDistance;
+        float totalValuesDist = distPerValue * (dataSetSize * dataPointSize + 1);
 
-		// try it out with mapping to total 0->1
-		int totalCnt = dataSetSize * dataPointSize;
-		double xScale = 1.0 / totalCnt;
-		double yScale = 1.0 / maxValue;
+        int totalCnt = dataSetSize * dataPointSize;
+        float barWidth = (drawArea.width() - totalSeriesDist - totalValuesDist) / totalCnt;
+        double yScale = drawArea.height() / (maxValue * 1.1);
+        int seriesCnt = 0;
+        float dist = (distPerSeries + distPerValue) / 2.0f; // start with half
+        for (DataSet dataSet : data.getDataSets()) {
+            int dataCnt = 0;
+            for (DataPoint dataPoint : dataSet.getDataPoints()) {
+                BarDataPrep.BarDataPoint prepared = (BarDataPrep.BarDataPoint) dataPoint.getPrepared();
 
-		int seriesCnt = 0;
-		for (DataSet dataSet : data.getDataSets()) {
-			int dataCnt = 0;
-			for (DataPoint dataPoint : dataSet.getDataPoints()) {
-				BarDataPrep.BarDataPoint prepared = (BarDataPrep.BarDataPoint) dataPoint.getPrepared();
-				prepared.xOffset = xScale * (seriesCnt * dataPointSize) + xScale * dataCnt;
-				prepared.xScale = xScale;
-				prepared.yOffset = 0;
-				prepared.yScale = yScale * dataPoint.getValue();
-				dataCnt++;
-			}
-			seriesCnt++;
-		}
-	}
+                prepared.position.top = 0f;
+                prepared.position.bottom = (float) (dataPoint.getValue() * yScale);
+                prepared.position.left = dist + (dataCnt + seriesCnt * dataPointSize) * barWidth;
+                prepared.position.right = prepared.position.left + barWidth;
 
+                dataCnt++;
+                dist += distPerValue;
+            }
+            dist += distPerSeries;
+            seriesCnt++;
+        }
+    }
 
-	@Override
-	protected PreparedDataPoint getPreparedDataPoint() {
-		return new BarDataPrep.BarDataPoint();
-	}
+    @Override
+    protected PreparedDataPoint getPreparedDataPoint() {
+        return new BarDataPrep.BarDataPoint();
+    }
+
+    public static class BarDataPoint extends PreparedDataPoint {
+        public RectF position = new RectF();
+    }
 }

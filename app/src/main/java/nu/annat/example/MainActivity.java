@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.annat.andchart.options.AxisOptions;
+import nu.annat.andchart.options.BarChartOptions;
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.data.DataPoint;
 import nu.annat.andchart.data.DataSet;
@@ -20,13 +22,19 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-		binding.chart1.setChartLayout(new BarChart());
+		BarChartOptions options = new BarChartOptions();
+		options.barDistance = 20;
+		options.seriesDistance = 8;
+		options.xAxis = new AxisOptions();
+		options.yAxis = new AxisOptions();
+
+		binding.chart1.setChartLayout(new BarChart(options));
 		binding.chart1.setData(getData());
 
-		binding.chart2.setChartLayout(new BarChart());
+		binding.chart2.setChartLayout(new BarChart(options));
 		binding.chart2.setData(getData2());
 
-		binding.chart3.setChartLayout(new StackedBarChart());
+		binding.chart3.setChartLayout(new StackedBarChart(options));
 		binding.chart3.setData(getData3());
 	}
 
@@ -68,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 		dataPoints3.add(new DataPoint("a", 1.0));
 		dataPoints3.add(new DataPoint("b", 2.0));
 		dataPoints3.add(new DataPoint("c", 2.0));
-		dataPoints2.add(new DataPoint("d", 15.0));
+		dataPoints3.add(new DataPoint("d", 15.0));
 //		dataPoints2.add(new DataPoint("e", 3.0));
 //		dataPoints2.add(new DataPoint("f", 5.0));
 //		dataPoints2.add(new DataPoint("g", 7.0));
@@ -95,7 +103,14 @@ public class MainActivity extends AppCompatActivity {
 		dataPoints2.add(new DataPoint("b", 5.0));
 		DataSet dataSet2 = new DataSet(dataPoints2);
 
-		data.setDataSets(dataSet, dataSet2);
+		List<DataPoint> dataPoints3 = new ArrayList<>();
+		dataPoints3.add(new DataPoint("a", 11.0));
+		dataPoints3.add(new DataPoint("b", 12.0));
+		dataPoints3.add(new DataPoint("b", 8.0));
+		dataPoints3.add(new DataPoint("b", 5.0));
+		DataSet dataSet3 = new DataSet(dataPoints3);
+
+		data.setDataSets(dataSet, dataSet2, dataSet3);
 		return data;
 	}
 }

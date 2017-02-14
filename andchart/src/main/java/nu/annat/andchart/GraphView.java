@@ -12,6 +12,7 @@ import android.view.View;
 
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.drawer.ChartLayout;
+import nu.annat.andchart.options.ChartOptions;
 
 public class GraphView extends View {
 	protected ChartData data;

@@ -1,67 +1,79 @@
 package nu.annat.andchart.data;
 
+import android.graphics.Rect;
 import android.graphics.RectF;
 
-public class DataPrep {
-	public static class PreparedChartData {
-		public int series;
-		public int datumPerSeries;
+import nu.annat.andchart.options.ChartOptions;
 
-		public int getTotalValues() {
-			return series * datumPerSeries;
-		}
-	}
+public class DataPrep<T extends ChartOptions> {
+    private ChartData data;
+    protected T options;
 
-	public static class PreparedDataSet {
+    public DataPrep(T options) {
+        this.options = options;
+    }
 
-	}
+    public void setData(ChartData data) {
+        this.data = data;
+        if (data == null) return;
+        addPrepData(data);
+    }
 
-	public static class PreparedDataPoint {
+    public void setOptions(T options){
+        this.options = options;
+    }
 
-	}
+    public void prepare(Rect drawArea) {
+        prep(data, drawArea);
+    }
 
-	private ChartData data;
+    public void setDrawArea(RectF drawArea) {
+    }
 
-	public void setData(ChartData data) {
-		this.data = data;
-		if (data == null) return;
-		addPrepData(data);
-	}
+    protected void prep(ChartData data, Rect drawArea) {
+        PreparedChartData prepared = data.getPrepared();
+        prepared.series = data.getDataSets().size();
+        for (DataSet dataSet : data.getDataSets()) {
+            prepared.datumPerSeries = Math.max(prepared.datumPerSeries, dataSet.getDataPoints().size());
+        }
+    }
 
-	public void prepare() {
-		prep(data);
-	}
+    protected void addPrepData(ChartData data) {
+        data.setPrepared(getPreparedChart());
+        for (DataSet dataSet : data.getDataSets()) {
+            dataSet.setPrepared(getPreparedDataSet());
+            for (DataPoint dataPoint : dataSet.getDataPoints()) {
+                dataPoint.setPrepared(getPreparedDataPoint());
+            }
+        }
+    }
 
-	public void setDrawArea(RectF drawArea) {
-	}
+    protected PreparedDataSet getPreparedDataSet() {
+        return new PreparedDataSet();
+    }
 
-	protected void prep(ChartData data) {
-		PreparedChartData prepared = data.getPrepared();
-		prepared.series = data.getDataSets().size();
-		for (DataSet dataSet : data.getDataSets()) {
-			prepared.datumPerSeries = Math.max(prepared.datumPerSeries, dataSet.getDataPoints().size());
-		}
-	}
+    protected PreparedChartData getPreparedChart() {
+        return new PreparedChartData();
+    }
 
-	protected void addPrepData(ChartData data) {
-		data.setPrepared(getPreparedChart());
-		for (DataSet dataSet : data.getDataSets()) {
-			dataSet.setPrepared(getPreparedDataSet());
-			for (DataPoint dataPoint : dataSet.getDataPoints()) {
-				dataPoint.setPrepared(getPreparedDataPoint());
-			}
-		}
-	}
+    protected PreparedDataPoint getPreparedDataPoint() {
+        return new PreparedDataPoint();
+    }
 
-	protected PreparedDataSet getPreparedDataSet() {
-		return new PreparedDataSet();
-	}
+    public static class PreparedChartData {
+        public int series;
+        public int datumPerSeries;
 
-	protected PreparedChartData getPreparedChart() {
-		return new PreparedChartData();
-	}
+        public int getTotalValues() {
+            return series * datumPerSeries;
+        }
+    }
 
-	protected PreparedDataPoint getPreparedDataPoint() {
-		return new PreparedDataPoint();
-	}
+    public static class PreparedDataSet {
+
+    }
+
+    public static class PreparedDataPoint {
+
+    }
 }
