@@ -84,10 +84,6 @@ public class GraphView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-
-		if (isInEditMode()) {
-			setBackgroundColor(Color.RED);
-		}
 		super.onDraw(canvas); // draws the background
 
 		if(chartLayout !=null && data!=null){

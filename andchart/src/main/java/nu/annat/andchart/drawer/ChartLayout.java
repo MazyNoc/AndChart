@@ -33,7 +33,6 @@ public class ChartLayout<T extends ChartOptions, PREP extends DataPrep> {
     }
 
     public void draw(ChartData data, Canvas canvas) {
-        this.data = data;
     }
 
     public void ensureInit(Configuration configuration) {

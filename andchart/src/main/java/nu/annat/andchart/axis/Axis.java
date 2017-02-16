@@ -15,9 +15,9 @@ public abstract class Axis {
         paint.setColor(Color.BLACK);
     }
 
-    public abstract void draw(Canvas canvas, ChartData data, Rect area);
+    public abstract void draw(Canvas canvas, Rect area);
 
     public Insets getInsets() {
-        return new Insets(0, 0, 0, 40);
+        return new Insets();
     }
 }

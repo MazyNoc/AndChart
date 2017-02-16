@@ -3,7 +3,6 @@ package nu.annat.andchart.axis;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.utils.Insets;
 
 public class XAxis extends Axis {
@@ -15,7 +14,7 @@ public class XAxis extends Axis {
     }
 
     @Override
-    public void draw(Canvas canvas, ChartData data, Rect area) {
+    public void draw(Canvas canvas, Rect area) {
         init();
         canvas.drawLine(area.left, area.top, area.right, area.top, paint);
 
