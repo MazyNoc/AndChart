@@ -1,6 +1,7 @@
 package nu.annat.andchart.drawer;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import nu.annat.andchart.options.BarChartOptions;
 import nu.annat.andchart.data.BarDataPrep;
@@ -14,7 +15,7 @@ public abstract class AbstractBarChart<PREP extends DataPrep> extends AxisChart<
     public AbstractBarChart(BarChartOptions options) {
         super(options);
     }
-
+    private Rect tempRect = new Rect();
     @Override
     public void setData(ChartData data) {
         super.setData(data);
@@ -25,9 +26,10 @@ public abstract class AbstractBarChart<PREP extends DataPrep> extends AxisChart<
     public void drawMainArea(ChartData data, Canvas canvas) {
         super.drawMainArea(data, canvas);
         DataPrep.PreparedChartData prepData = data.getPrepared();
-        float distPerSeries = 80;
+
+        float distPerSeries =options.groupDistance;
         float totalSeriesDist = distPerSeries * (prepData.series + 1);
-        float distPerValue = 10;
+        float distPerValue = options.barDistance;
         float totalValuesDist = distPerValue * (prepData.getTotalValues() + 1);
 
         yScale = (mainDrawArea.height()) / 1.10;
@@ -41,7 +43,10 @@ public abstract class AbstractBarChart<PREP extends DataPrep> extends AxisChart<
 
                 dataRect.set(prepared.position);
                 dataRect.offset(mainDrawArea.left, mainDrawArea.bottom - dataRect.bottom - dataRect.top);
-                canvas.drawRect(dataRect, rectPaint);
+                dataRect.round(tempRect);
+                set.getDrawable().setBounds(tempRect);
+                set.getDrawable().draw(canvas);
+                //canvas.drawRect(dataRect, rectPaint);
                 dataCnt++;
             }
             seriesCnt++;

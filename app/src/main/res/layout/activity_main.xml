@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
+    <data>
+        <variable
+            name="handler"
+            type="nu.annat.example.MainActivity"/>
+    </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,6 +16,7 @@
         tools:context="nu.annat.example.MainActivity">
 
         <nu.annat.andchart.GraphView
+            android:onClick="@{handler::onChartClicked}"
             android:id="@+id/chart1"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -35,27 +41,20 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/chart2"
-            app:layout_constraintBottom_toTopOf="@+id/pie"
+            app:layout_constraintBottom_toTopOf="@+id/chart4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
 
-        <nu.annat.andchart.PieChart
-            android:id="@+id/pie"
+        <nu.annat.andchart.GraphView
+            android:id="@+id/chart4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/chart3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:showText="true"
-            app:labelHeight="40dp"
-            app:labelColor="@color/colorAccent"
-            app:labelY="20dp"
-            app:labelWidth="40dp"
-            app:autoCenterPointerInSlice="true"
-            app:labelPosition="left"
-            android:layout_width="0dp"
-            android:layout_height="0dp">
+            />
 
-        </nu.annat.andchart.PieChart>
     </android.support.constraint.ConstraintLayout>
 </layout>

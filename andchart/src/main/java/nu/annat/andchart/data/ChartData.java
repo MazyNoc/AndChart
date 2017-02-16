@@ -22,7 +22,7 @@ public class ChartData {
 	}
 
 	public List<DataSet> getDataSets() {
-		return dataSets == null ? Collections.EMPTY_LIST : dataSets;
+		return dataSets == null ? Collections.<DataSet>emptyList() : dataSets;
 	}
 
 	public void setDataSets(DataSet... dataSets) {

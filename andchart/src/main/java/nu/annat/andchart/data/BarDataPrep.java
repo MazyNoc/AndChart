@@ -31,16 +31,16 @@ public class BarDataPrep<T extends BarChartOptions> extends DataPrep<T> {
             }
         }
 
-        float distPerSeries = options.seriesDistance;
-        float totalSeriesDist = distPerSeries * dataSetSize;
-        float distPerValue = options.barDistance;
-        float totalValuesDist = distPerValue * (dataSetSize * dataPointSize + 1);
+        float barDistance = options.barDistance;
+        float groupDistance = options.groupDistance;
+        float totalGroupDist = barDistance * dataPointSize;
+        float totalValuesDist = groupDistance * (dataSetSize * dataPointSize );
 
         int totalCnt = dataSetSize * dataPointSize;
-        float barWidth = (drawArea.width() - totalSeriesDist - totalValuesDist) / totalCnt;
+        float barWidth = (drawArea.width() - totalGroupDist - totalValuesDist) / totalCnt;
         double yScale = drawArea.height() / (maxValue * 1.1);
         int seriesCnt = 0;
-        float dist = (distPerSeries + distPerValue) / 2.0f; // start with half
+        float dist = (barDistance + groupDistance) / 2.0f; // start with half
         for (DataSet dataSet : data.getDataSets()) {
             int dataCnt = 0;
             for (DataPoint dataPoint : dataSet.getDataPoints()) {
@@ -48,13 +48,16 @@ public class BarDataPrep<T extends BarChartOptions> extends DataPrep<T> {
 
                 prepared.position.top = 0f;
                 prepared.position.bottom = (float) (dataPoint.getValue() * yScale);
-                prepared.position.left = dist + (dataCnt + seriesCnt * dataPointSize) * barWidth;
+                dist = barDistance/2 + dataCnt * barDistance;
+                dist += dataCnt * dataSetSize * groupDistance;
+                dist += groupDistance * seriesCnt;
+                prepared.position.left = dist + (dataCnt * dataSetSize + seriesCnt ) * barWidth;
                 prepared.position.right = prepared.position.left + barWidth;
 
                 dataCnt++;
-                dist += distPerValue;
+                //dist += groupDistance;
             }
-            dist += distPerSeries;
+           // dist += distPerSeries;
             seriesCnt++;
         }
     }

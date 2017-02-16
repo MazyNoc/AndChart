@@ -7,6 +7,8 @@ import java.util.List;
 
 import nu.annat.andchart.options.BarChartOptions;
 
+import static nu.annat.andchart.data.BarDataPrep.*;
+
 public class StackedDataPrep extends DataPrep<BarChartOptions> {
 
     public StackedDataPrep(BarChartOptions options) {
@@ -35,7 +37,7 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
         }
 
 
-        float distPerSeries = options.seriesDistance;
+        float distPerSeries = options.groupDistance;
         float totalSeriesDist = distPerSeries * dataSetSize;
         float distPerValue = options.barDistance;
         float totalValuesDist = distPerValue * (dataPointSize + 1);
@@ -44,10 +46,10 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
         float barWidth = (drawArea.width() - totalValuesDist) / dataPointSize;
         double yScale = (drawArea.height()) / maxValue;
 
-        float xOffset = distPerValue / 2;
+        float xOffset = distPerValue ;
         int cnt = 0;
         for (DataPoint dataPoint : data.getDataSets().get(0).getDataPoints()) {
-            BarDataPrep.BarDataPoint prepared = (BarDataPrep.BarDataPoint) dataPoint.getPrepared();
+            BarDataPoint prepared = (BarDataPoint) dataPoint.getPrepared();
             RectF position = prepared.position;
             position.top = 0;
             position.bottom = (float) (dataPoint.getValue() * yScale) - distPerSeries;
@@ -62,7 +64,7 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
             List<DataPoint> dataSetPrev = data.getDataSets().get(i - 1).getDataPoints();
             List<DataPoint> dataSetCurrent = data.getDataSets().get(i).getDataPoints();
             cnt = 0;
-            xOffset = distPerValue / 2;
+            xOffset = distPerValue;
             for (int i1 = 0; i1 < dataSetPrev.size(); i1++) {
                 DataPoint dataPointPrev = dataSetPrev.get(i1);
                 DataPoint dataPointCurrent = dataSetCurrent.get(i1);
@@ -83,15 +85,11 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
         }
     }
 
-    public static class StackedChartData extends PreparedChartData {
+    @Override
+    protected PreparedDataPoint getPreparedDataPoint() {
+        return new BarDataPoint();
     }
 
-    public static class StackedDataSet extends PreparedDataSet {
-        public double xScale;
-        public double yScale;
-        public double xOffset;
-        public double yOffset;
-    }
 
 
 }

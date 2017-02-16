@@ -4,10 +4,11 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import nu.annat.andchart.options.ChartOptions;
+import nu.annat.andchart.utils.MinMax;
 
 public class DataPrep<T extends ChartOptions> {
-    private ChartData data;
     protected T options;
+    private ChartData data;
 
     public DataPrep(T options) {
         this.options = options;
@@ -19,7 +20,7 @@ public class DataPrep<T extends ChartOptions> {
         addPrepData(data);
     }
 
-    public void setOptions(T options){
+    public void setOptions(T options) {
         this.options = options;
     }
 
@@ -33,8 +34,13 @@ public class DataPrep<T extends ChartOptions> {
     protected void prep(ChartData data, Rect drawArea) {
         PreparedChartData prepared = data.getPrepared();
         prepared.series = data.getDataSets().size();
+        prepared.minMaxValues = new MinMax();
         for (DataSet dataSet : data.getDataSets()) {
             prepared.datumPerSeries = Math.max(prepared.datumPerSeries, dataSet.getDataPoints().size());
+            for (DataPoint dataPoint : dataSet.getDataPoints()) {
+                prepared.minMaxValues.append(dataPoint.getValue());
+            }
+
         }
     }
 
@@ -63,6 +69,7 @@ public class DataPrep<T extends ChartOptions> {
     public static class PreparedChartData {
         public int series;
         public int datumPerSeries;
+        public MinMax minMaxValues;
 
         public int getTotalValues() {
             return series * datumPerSeries;

@@ -1,5 +1,6 @@
 package nu.annat.andchart;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,11 +12,13 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import nu.annat.andchart.data.ChartData;
+import nu.annat.andchart.data.DataPrep;
 import nu.annat.andchart.drawer.ChartLayout;
 import nu.annat.andchart.options.ChartOptions;
 
 public class GraphView extends View {
 	protected ChartData data;
+	private ChartData newData;
 
 	private ChartLayout chartLayout;
 
@@ -74,7 +77,9 @@ public class GraphView extends View {
 	}
 
 	private void startAnimate() {
-
+//		PreparedData prep = chartLayout.prepData(newData);
+//		chartLayout.draw(slerp(oldPrepData, prepData, 0.5));
+//		ObjectAnimator.ofFloat(this, "dataAnimPosition", 0,1);
 	}
 
 	@Override
