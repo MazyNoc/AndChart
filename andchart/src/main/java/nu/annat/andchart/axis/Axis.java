@@ -10,10 +10,13 @@ import nu.annat.andchart.utils.Insets;
 
 public abstract class Axis {
     protected Paint paint = new Paint();
+    protected ChartData data;
 
-    protected void init() {
+    public void init(ChartData data) {
+        this.data = data;
         paint.setColor(Color.BLACK);
     }
+
 
     public abstract void draw(Canvas canvas, Rect area);
 

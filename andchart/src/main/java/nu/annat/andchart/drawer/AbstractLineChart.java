@@ -6,9 +6,10 @@ import android.graphics.PointF;
 
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.data.DataPrep;
+import nu.annat.andchart.options.AxisChartOptions;
 import nu.annat.andchart.options.ChartOptions;
 
-public abstract class AbstractLineChart<T extends ChartOptions, PREP extends DataPrep> extends AxisChart<T, PREP> {
+public abstract class AbstractLineChart<T extends AxisChartOptions, PREP extends DataPrep> extends AxisChart<T, PREP> {
 
     private PointF tempPoint = new PointF();
     private PointF lastPoint = new PointF();

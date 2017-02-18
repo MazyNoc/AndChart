@@ -29,6 +29,10 @@ public class DataPoint {
         return color;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public DataPrep.PreparedDataPoint getPrepared() {
         return prepared;
     }

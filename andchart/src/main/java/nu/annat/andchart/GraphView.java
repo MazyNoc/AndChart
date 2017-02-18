@@ -1,9 +1,7 @@
 package nu.annat.andchart;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -12,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import nu.annat.andchart.data.ChartData;
-import nu.annat.andchart.data.DataPrep;
 import nu.annat.andchart.drawer.ChartLayout;
 import nu.annat.andchart.options.ChartOptions;
 
@@ -45,6 +42,7 @@ public class GraphView extends View {
 
 	public void setData(ChartData data) {
 		this.data = data;
+		ensureInit();
 		invalidate();
 //
 //		if (this.data != null) {
@@ -58,6 +56,7 @@ public class GraphView extends View {
 
 	public void setChartLayout(ChartLayout chartLayout) {
 		this.chartLayout = chartLayout;
+		ensureInit();
 		invalidate();
 	}
 
@@ -70,7 +69,7 @@ public class GraphView extends View {
 	}
 
 	protected void ensureInit() {
-		if(chartLayout !=null){
+		if(chartLayout !=null && data!=null){
 			chartLayout.setData(data);
 			chartLayout.ensureInit(new ContextConfiguration(getContext()));
 		}
@@ -87,8 +86,7 @@ public class GraphView extends View {
 		super.onDraw(canvas); // draws the background
 
 		if(chartLayout !=null && data!=null){
-			ensureInit();
-			chartLayout.draw(data, canvas);
+			chartLayout.draw(canvas);
 		}
 	}
 
@@ -97,4 +95,11 @@ public class GraphView extends View {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		if (chartLayout!=null){
+			chartLayout.onChartMeasure(left, top, right, bottom);
+		}
+	}
 }

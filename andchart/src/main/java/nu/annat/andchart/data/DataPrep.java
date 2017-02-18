@@ -81,6 +81,7 @@ public class DataPrep<T extends ChartOptions> {
     }
 
     public static class PreparedDataPoint {
-
+        public float centerX;
+        public float centerY;
     }
 }

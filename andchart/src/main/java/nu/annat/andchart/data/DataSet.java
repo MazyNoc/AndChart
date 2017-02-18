@@ -13,11 +13,13 @@ public class DataSet {
 
 	private final Drawable drawable;
 	private final Integer color;
+	private final String label;
 	private List<DataPoint> dataPoints;
 	private Object identifier;
 	private DataPrep.PreparedDataSet prepared;
 
-	public DataSet(Drawable drawable, List<DataPoint> dataPoints) {
+	public DataSet(String label, Drawable drawable, List<DataPoint> dataPoints) {
+		this.label = label;
 		this.drawable = drawable;
 		if(drawable instanceof ColorDrawable){
 			color = ((ColorDrawable) drawable).getColor();
@@ -26,14 +28,15 @@ public class DataSet {
 		}
 		this.dataPoints = dataPoints;
 	}
-	public DataSet(int color, List<DataPoint> dataPoints) {
+	public DataSet(String label, int color, List<DataPoint> dataPoints) {
+		this.label = label;
 		this.drawable = new ColorDrawable(color);
 		this.color = color;
 		this.dataPoints = dataPoints;
 	}
 
-	public DataSet(Drawable drawable, DataPoint... dataPoints) {
-		this(drawable, new ArrayList<>(Arrays.asList(dataPoints)));
+	public DataSet(String label, Drawable drawable, DataPoint... dataPoints) {
+		this(label, drawable, new ArrayList<>(Arrays.asList(dataPoints)));
 	}
 
 	public List<DataPoint> getDataPoints() {
@@ -55,5 +58,9 @@ public class DataSet {
 	public int getColor() {
 		if(color == null) return Color.RED;
 		return color;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 }
