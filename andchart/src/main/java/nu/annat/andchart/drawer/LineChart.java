@@ -66,6 +66,8 @@ public class LineChart extends AbstractLineChart<LineChartOptions, LineDataPrep>
 
         p.rewind();
 
+
+
         paint.setColor(dataSet.getColor());
         int size = dataSet.getDataPoints().size();
         for (int i = 0; i < size; i++) {
