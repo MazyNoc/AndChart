@@ -6,12 +6,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.annat.andchart.axis.XAxis;
+import nu.annat.andchart.axis.XAxisPainter;
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.data.DataPoint;
 import nu.annat.andchart.data.DataSet;
@@ -53,13 +54,16 @@ public class MainActivity extends AppCompatActivity {
         options2.xAxis = new AxisOptions();
         options2.yAxis = new AxisOptions();
 
-        binding.chart3.setChartLayout(new StackedBarChart(options2));
+
+        StackedBarChart stackedBarChart = new StackedBarChart(options2);
+        stackedBarChart.setxAxisPainter(new XAxisPainter(new AxisOptions()
+        .setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()))));
+        binding.chart3.setChartLayout(stackedBarChart);
         binding.chart3.setData(getData3());
 
         LineChartOptions lineChartOptions = new LineChartOptions();
         lineChartOptions.xAxis = new AxisOptions();
         lineChartOptions.yAxis = new AxisOptions();
-        lineChartOptions.xAxis.setPainter(new XAxis());
         lineChartOptions.smooth = false;
         lineChartOptions.pointRadius = 20;
         binding.chart4.setChartLayout(new LineChart(lineChartOptions));
@@ -131,24 +135,24 @@ public class MainActivity extends AppCompatActivity {
         ChartData data = new ChartData();
 
         List<DataPoint> dataPoints = new ArrayList<>();
-        dataPoints.add(new DataPoint("a", 10.0));
+        dataPoints.add(new DataPoint("Jan", 10.0));
         dataPoints.add(new DataPoint("b", 11.0));
-        dataPoints.add(new DataPoint("b", 11.0));
-        dataPoints.add(new DataPoint("b", 32.0));
+        dataPoints.add(new DataPoint("c", 11.0));
+        dataPoints.add(new DataPoint("d", 32.0));
         DataSet dataSet = new DataSet(null, new ColorDrawable(Color.BLUE), dataPoints);
 
         List<DataPoint> dataPoints2 = new ArrayList<>();
         dataPoints2.add(new DataPoint("a", 11.0));
         dataPoints2.add(new DataPoint("b", 12.0));
-        dataPoints2.add(new DataPoint("b", 8.0));
-        dataPoints2.add(new DataPoint("b", 5.0));
+        dataPoints2.add(new DataPoint("c", 8.0));
+        dataPoints2.add(new DataPoint("d", 5.0));
         DataSet dataSet2 = new DataSet(null, new ColorDrawable(Color.GREEN), dataPoints2);
 
         List<DataPoint> dataPoints3 = new ArrayList<>();
         dataPoints3.add(new DataPoint("a", 11.0));
         dataPoints3.add(new DataPoint("b", 12.0));
-        dataPoints3.add(new DataPoint("b", 8.0));
-        dataPoints3.add(new DataPoint("b", 5.0));
+        dataPoints3.add(new DataPoint("c", 8.0));
+        dataPoints3.add(new DataPoint("d", 5.0));
         DataSet dataSet3 = new DataSet(null, new ColorDrawable(Color.RED), dataPoints3);
 
         data.setDataSets(dataSet, dataSet2, dataSet3);

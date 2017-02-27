@@ -35,7 +35,7 @@ public class ChartLayout<T extends ChartOptions, PREP extends DataPrep> {
     public void draw(Canvas canvas) {
     }
 
-    public void onChartMeasure(int left, int top, int right, int bottom){}
+    public void onChartLayout(int left, int top, int right, int bottom){}
 
     public void ensureInit(Configuration configuration) {
 

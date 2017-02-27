@@ -1,15 +1,27 @@
 package nu.annat.andchart.options;
 
-import nu.annat.andchart.axis.Axis;
+import android.graphics.Typeface;
 
 public class AxisOptions {
-    private Axis painter;
 
-    public Axis getPainter() {
-        return painter;
+    public float textSize = 122;
+    public Typeface typeface;
+
+    public float getTextSize() {
+        return textSize;
     }
 
-    public void setPainter(Axis painter) {
-        this.painter = painter;
+    public AxisOptions setTextSize(float textSize) {
+        this.textSize = textSize;
+        return this;
+    }
+
+    public Typeface getTypeface() {
+        return typeface;
+    }
+
+    public AxisOptions setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+        return this;
     }
 }

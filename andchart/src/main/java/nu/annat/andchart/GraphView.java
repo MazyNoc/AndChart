@@ -99,7 +99,7 @@ public class GraphView extends View {
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
 		if (chartLayout!=null){
-			chartLayout.onChartMeasure(left, top, right, bottom);
+			chartLayout.onChartLayout(0,0, right-left, bottom-top);
 		}
 	}
 }

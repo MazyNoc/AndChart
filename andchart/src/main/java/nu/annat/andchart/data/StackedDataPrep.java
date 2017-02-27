@@ -55,6 +55,7 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
             position.bottom = (float) (dataPoint.getValue() * yScale) - distPerSeries;
             position.left = xOffset + cnt * barWidth;
             position.right = position.left + barWidth;
+            prepared.centerX = (position.left + position.right)/2;
             cnt++;
             xOffset += distPerValue;
         }
@@ -78,7 +79,7 @@ public class StackedDataPrep extends DataPrep<BarChartOptions> {
                 position.bottom = yoffset + (float) (dataPointCurrent.getValue() * yScale) - distPerSeries;
                 position.left = xOffset +  cnt * barWidth;
                 position.right = position.left + barWidth;
-
+                preparedCurrent.centerX = (position.left + position.right)/2;
                 cnt++;
                 xOffset += distPerValue;
             }

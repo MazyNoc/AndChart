@@ -3,11 +3,10 @@ package nu.annat.andchart.drawer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import nu.annat.andchart.Configuration;
-import nu.annat.andchart.axis.Axis;
+import nu.annat.andchart.axis.AxisPainter;
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.data.DataPrep;
 import nu.annat.andchart.options.AxisChartOptions;
@@ -25,12 +24,28 @@ public class AxisChart<T extends AxisChartOptions, PREP extends DataPrep> extend
     protected RectF dataRect = new RectF();
     protected double yScale;
     protected double xScale;
-    Rect xAxisArea = new Rect();
-    Rect yAxisArea = new Rect();
+    private AxisPainter xAxisPainter;
+    private AxisPainter yAxisPainter;
     private Insets insets = new Insets();
 
     public AxisChart(T options) {
         super(options);
+    }
+
+    public AxisPainter getyAxisPainter() {
+        return yAxisPainter;
+    }
+
+    public void setyAxisPainter(AxisPainter yAxisPainter) {
+        this.yAxisPainter = yAxisPainter;
+    }
+
+    public AxisPainter getxAxisPainter() {
+        return xAxisPainter;
+    }
+
+    public void setxAxisPainter(AxisPainter xAxisPainter) {
+        this.xAxisPainter = xAxisPainter;
     }
 
     @Override
@@ -41,21 +56,20 @@ public class AxisChart<T extends AxisChartOptions, PREP extends DataPrep> extend
     }
 
     private void initAxis(AxisOptions axisOptions) {
-        if(axisOptions.getPainter()!=null)
-            axisOptions.getPainter().init(data);
+        if (xAxisPainter != null)
+            xAxisPainter.init(data);
     }
 
-    private void drawYAxis(Canvas canvas, Rect yAxisArea) {
-        Axis painter = options.yAxis.getPainter();
-        if (painter != null) {
-            painter.draw(canvas, yAxisArea);
+
+    private void drawYAxis(Canvas canvas) {
+        if (yAxisPainter != null) {
+            yAxisPainter.draw(canvas);
         }
     }
 
-    private void drawXAxis(Canvas canvas, Rect xAxisArea) {
-        Axis painter = options.xAxis.getPainter();
-        if (painter != null) {
-            painter.draw(canvas, xAxisArea);
+    private void drawXAxis(Canvas canvas) {
+        if (xAxisPainter != null) {
+            xAxisPainter.draw(canvas);
         }
     }
 
@@ -64,36 +78,45 @@ public class AxisChart<T extends AxisChartOptions, PREP extends DataPrep> extend
         super.draw(canvas);
         canvas.getClipBounds(mainDrawArea);
 
-        //yAxisArea.set(0, 0, yAxisDistance, canvas.getHeight());
-        drawYAxis(canvas, yAxisArea);
 
-       // xAxisArea.set(0, canvas.getHeight() - 124, canvas.getWidth(), canvas.getHeight());
-        drawXAxis(canvas, xAxisArea);
-
-        mainDrawArea.bottom = mainDrawArea.bottom - xAxisArea.height();
-        mainDrawArea.left = mainDrawArea.left + yAxisArea.right;
+        //   mainDrawArea.bottom = mainDrawArea.bottom - xAxisArea.height();
+        //   mainDrawArea.left = mainDrawArea.left + yAxisArea.right;
+        if (xAxisPainter != null)
+            mainDrawArea.bottom -= xAxisPainter.getInsets().bottom;
         dataPrep.prepare(mainDrawArea);
+
+        //yAxisArea.set(0, 0, yAxisDistance, canvas.getHeight());
+        drawYAxis(canvas);
+
+        // xAxisArea.set(0, canvas.getHeight() - 124, canvas.getWidth(), canvas.getHeight());
+        drawXAxis(canvas);
+
+
         drawMainArea(data, canvas);
     }
 
     @Override
-    public void onChartMeasure(int left, int top, int right, int bottom) {
+    public void onChartLayout(int left, int top, int right, int bottom) {
 
-        xAxisArea.left = 0;
-        xAxisArea.top = 0;
-        xAxisArea.right = right-left;
-        xAxisArea.bottom = bottom-top;
+//        xAxisArea.left = 0;
+//        xAxisArea.top = 0;
+//        xAxisArea.right = right - left;
+//        xAxisArea.bottom = bottom - top;
 
         boolean append = true;
 
-        insetAxis(insets, options.xAxis.getPainter(), append);
-        xAxisArea.top = xAxisArea.bottom - insets.bottom;
-        insetAxis(insets, options.yAxis.getPainter(), append);
 
+        insetAxis(insets, xAxisPainter, append);
+        //  xAxisArea.top = xAxisArea.bottom - insets.bottom;
+        insetAxis(insets, yAxisPainter, append);
 
+        if (xAxisPainter != null)
+            xAxisPainter.onLayout(left, top, right, bottom);
+        if (yAxisPainter != null)
+            yAxisPainter.onLayout(left, top, right, bottom);
     }
 
-    private void insetAxis(Insets insets, Axis painter, boolean append) {
+    private void insetAxis(Insets insets, AxisPainter painter, boolean append) {
         if (painter != null) {
             if (append)
                 insets.append(painter.getInsets());
@@ -104,8 +127,6 @@ public class AxisChart<T extends AxisChartOptions, PREP extends DataPrep> extend
 
     public void drawMainArea(ChartData data, Canvas canvas) {
         super.draw(canvas);
-
-
     }
 
     public void ensureInit(Configuration configuration) {
