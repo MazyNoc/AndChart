@@ -14,7 +14,7 @@ try {
     println "Missing release keystore passwords, add the keys \"bintray.user\" and \"bintray.key\" to your gradle.properties file"
 }
 
-def niceVersion = "0.0.3"
+def niceVersion = "0.0.4"
 
 
 android {

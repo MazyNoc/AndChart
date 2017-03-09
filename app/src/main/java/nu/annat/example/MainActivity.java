@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         LineChartOptions lineChartOptions = new LineChartOptions();
         lineChartOptions.xAxis = new AxisOptions();
         lineChartOptions.yAxis = new AxisOptions();
-        lineChartOptions.smooth = false;
+        lineChartOptions.smooth = true;
         lineChartOptions.pointRadius = 20;
         binding.chart4.setChartLayout(new LineChart(lineChartOptions));
         binding.chart4.setData(getData2());

@@ -71,7 +71,7 @@ public class LineChart extends AbstractLineChart<LineChartOptions, LineDataPrep>
         paint.setColor(dataSet.getColor());
         int size = dataSet.getDataPoints().size();
         for (int i = 0; i < size; i++) {
-            currPoint = ((LineDataPrep.LineDataPoint) dataSet.getDataPoints().get(i - 1).getPrepared()).position;
+            currPoint = ((LineDataPrep.LineDataPoint) dataSet.getDataPoints().get(i).getPrepared()).position;
             if (i == 0) {
                 nextPoint = ((LineDataPrep.LineDataPoint) dataSet.getDataPoints().get(i + 1).getPrepared()).position;
                 tempPoint.x = ((nextPoint.x - currPoint.x) / 3);
