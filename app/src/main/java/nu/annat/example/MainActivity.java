@@ -8,21 +8,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import nu.annat.andchart.axis.XAxisPainter;
 import nu.annat.andchart.data.ChartData;
 import nu.annat.andchart.data.DataPoint;
 import nu.annat.andchart.data.DataSet;
 import nu.annat.andchart.drawer.BarChart;
 import nu.annat.andchart.drawer.LineChart;
+import nu.annat.andchart.drawer.PieChartLayout;
 import nu.annat.andchart.drawer.StackedBarChart;
 import nu.annat.andchart.options.AxisOptions;
 import nu.annat.andchart.options.BarChartOptions;
 import nu.annat.andchart.options.LineChartOptions;
+import nu.annat.andchart.options.PieChartOptions;
 import nu.annat.example.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
         options.xAxis = new AxisOptions();
         options.yAxis = new AxisOptions();
 
-        binding.chart1.setChartLayout(new BarChart(options));
+//        binding.chart1.setChartLayout(new BarChart(options));
+
+        PieChartOptions pieChartOptions = new PieChartOptions();
+        pieChartOptions.degSpacing = 1;
+        binding.chart1.setChartLayout(new PieChartLayout(pieChartOptions));
+
         binding.chart1.setData(getData());
 
         binding.chart2.setChartLayout(new BarChart(options));
@@ -56,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         StackedBarChart stackedBarChart = new StackedBarChart(options2);
-        stackedBarChart.setxAxisPainter(new XAxisPainter(new AxisOptions()
-        .setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()))));
+        stackedBarChart.setxAxisPainter(new XAxisPainter(new AxisOptions().setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()))));
         binding.chart3.setChartLayout(stackedBarChart);
         binding.chart3.setData(getData3());
 
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         lineChartOptions.pointRadius = 20;
         binding.chart4.setChartLayout(new LineChart(lineChartOptions));
         binding.chart4.setData(getData2());
+
 
     }
 

@@ -57,7 +57,6 @@ public class GraphView extends View {
 	public void setChartLayout(ChartLayout chartLayout) {
 		this.chartLayout = chartLayout;
 		ensureInit();
-		invalidate();
 	}
 
 	public ChartLayout getChartLayout() {
@@ -72,6 +71,7 @@ public class GraphView extends View {
 		if(chartLayout !=null && data!=null){
 			chartLayout.setData(data);
 			chartLayout.ensureInit(new ContextConfiguration(getContext()));
+			invalidate();
 		}
 	}
 
